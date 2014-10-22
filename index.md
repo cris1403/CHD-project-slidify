@@ -17,14 +17,11 @@ knit        : slidify::knit2slides
 * We have built a risk assessment tool for estimating
 a person 10-year risk of having a heart attack
 
-* Heart disease has been the leading cause of death
-worldwide
+* Heart disease has been one leading cause of death worldwide
 
-* Risk factors are variables that increase the chances of a
-disease
+* Risk factors are variables that increase the chances of a disease
 
-* Key to successful prediction of CHD: identifying the most
-important risk factors
+* Key to successful prediction of CHD: identifying the most important risk factors
 
 
 ---

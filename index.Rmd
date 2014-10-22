@@ -4,7 +4,7 @@ subtitle    : Assess the probability of having a Coronary Heart Disease
 author      : Cristian Mastrofrancesco
 job         : statistician
 framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
-highlighter : highlight.js  # {highlight.js, prettify, highlight}
+highlighter : prettify  # {highlight.js, prettify, highlight}
 hitheme     : tomorrow      # 
 widgets     : []            # {mathjax, quiz, bootstrap}
 ext_widgets : {rCharts: [libraries/nvd3]}
@@ -29,7 +29,7 @@ important risk factors
 
 ---
 
-## Risk factors (1)
+## Risk factors
 
 We took into account different features:
 + demographic
@@ -39,39 +39,75 @@ We took into account different features:
 
 ---
 
-## Most dangerous risk factors
+## Cholesterol and CHD
+
 
 ```{r echo = F, results = 'asis'}
 require(rCharts)
 load("framingham.Rdata") 
-framingham = na.omit(framingham)
-levels(framingham$TenYearCHD)[1]='No'
-levels(framingham$TenYearCHD)[2]='Yes'
-levels(framingham$male)[1]='Female'
-levels(framingham$male)[2]='Male'
 
-dataset = as.data.frame(table(framingham$TenYearCHD, framingham$cholBins))
-colnames(dataset)=c("CHD", "Cholesterol", "Freq")
-n1 = nPlot(Freq ~ Cholesterol,  group = "CHD", data = dataset,
-           type = "multiBarChart")
-
-# fram_chd_chol = as.data.frame(table(framingham$TenYearCHD, framingham$cholBins, framingham$male))
-# colnames(fram_chd_chol)=c("CHD", "Cholesterol", "Sex", "Freq")
-# 
-# n1 <- nPlot(Freq ~ CHD, group = "Cholesterol", data = fram_chd_chol, type = "multiBarChart")
+dataset = as.data.frame(prop.table(table(framingham$TenYearCHD, framingham$cholBins),2))
+colnames(dataset)=c("CHD", "Cholesterol", "Frequency")
+n1 = nPlot(Frequency ~ Cholesterol,  group = "CHD", data = dataset, type = "multiBarChart")
 n1$print("chart1")
 
-
-# hair_eye_male <- subset(as.data.frame(HairEyeColor), Sex == "Male")
-# n1 <- nPlot(Freq ~ Hair, group = "Eye", data = hair_eye_male, type = "multiBarChart")
-# n1$print("chart3")
-
-
 ```
+
+Cholesterol is a dangerous risk factor!
 
 
 ---
 
+## Smoking behavior and CHD
+
+```{r echo = F, results = 'asis'}
+require(rCharts)
+load("framingham.Rdata") 
+
+dataset = as.data.frame(prop.table(table(framingham$TenYearCHD, framingham$smokerclass),2))
+colnames(dataset)=c("CHD", "Smoker", "Frequency")
+n1 = nPlot(Frequency ~ Smoker,  group = "CHD", data = dataset, type = "multiBarChart")
+n1$print("chart2")
+
+```
+
+Smoking doesn't seem to be so dangerous regarding CHD
+
+---
+
+## Glucose levels and CHD
+
+```{r echo = F, results = 'asis'}
+require(rCharts)
+load("framingham.Rdata") 
+
+dataset = as.data.frame(prop.table(table(framingham$TenYearCHD, framingham$glucoseclass),2))
+colnames(dataset)=c("CHD", "Glucose", "Frequency")
+n1 = nPlot(Frequency ~ Glucose,  group = "CHD", data = dataset, type = "multiBarChart")
+n1$print("chart3")
+
+```
+
+Glucose levels have an high impact on the probability a person has a CHD!!!
+
+---
+
+## Weight and CHD
+
+```{r echo = F, results = 'asis'}
+require(rCharts)
+load("framingham.Rdata") 
+
+dataset = as.data.frame(prop.table(table(framingham$TenYearCHD, framingham$weightclass),2))
+colnames(dataset)=c("CHD", "Weight", "Frequency")
+n1 = nPlot(Frequency ~ Weight,  group = "CHD", data = dataset, type = "multiBarChart")
+n1$print("chart4")
+
+```
+
+Also weight has a strong impact on the probaiblity to have a CHD!!
+
+---
 
 ## Modeling CHD
 

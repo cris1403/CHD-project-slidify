@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
     media="only screen and (max-device-width: 480px)" >
   <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
-  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <link rel="stylesheet" href="libraries/highlighters/prettify/css/tomorrow.css" />
   <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="libraries/widgets/nvd3/css/nv.d3.css"></link>
 <link rel=stylesheet href="libraries/widgets/nvd3/css/rNVD3.css"></link>
 <link rel=stylesheet href="./assets/css/ribbons.css"></link>
@@ -69,7 +69,7 @@ important risk factors</p></li>
 
 <slide class="" id="slide-2" style="background:;">
   <hgroup>
-    <h2>Risk factors (1)</h2>
+    <h2>Risk factors</h2>
   </hgroup>
   <article data-timings="">
     <p>We took into account different features:</p>
@@ -87,7 +87,7 @@ important risk factors</p></li>
 
 <slide class="" id="slide-3" style="background:;">
   <hgroup>
-    <h2>Most dangerous risk factors</h2>
+    <h2>Cholesterol and CHD</h2>
   </hgroup>
   <article data-timings="">
     <div id = 'chart1' class = 'rChart nvd3'></div>
@@ -102,7 +102,7 @@ important risk factors</p></li>
 "width":    800,
 "height":    400,
 "x": "Cholesterol",
-"y": "Freq",
+"y": "Frequency",
 "group": "CHD",
 "type": "multiBarChart",
 "id": "chart1" 
@@ -111,32 +111,32 @@ important risk factors</p></li>
  {
  "CHD": "No",
 "Cholesterol": "Desiderable",
-"Freq": 687 
+"Frequency": 0.8951521984216 
 },
 {
  "CHD": "Yes",
 "Cholesterol": "Desiderable",
-"Freq": 78 
+"Frequency": 0.1048478015784 
 },
 {
  "CHD": "No",
 "Cholesterol": "High",
-"Freq": 1124 
+"Frequency": 0.8540145985401 
 },
 {
  "CHD": "Yes",
 "Cholesterol": "High",
-"Freq": 191 
+"Frequency": 0.1459854014599 
 },
 {
  "CHD": "No",
 "Cholesterol": "Very High",
-"Freq": 1290 
+"Frequency": 0.8207126948775 
 },
 {
  "CHD": "Yes",
 "Cholesterol": "Very High",
-"Freq": 288 
+"Frequency": 0.1792873051225 
 } 
 ]
   
@@ -188,11 +188,360 @@ important risk factors</p></li>
     };
 </script>
 
+<p>Cholesterol is a dangerous risk factor!</p>
+
   </article>
   <!-- Presenter Notes -->
 </slide>
 
 <slide class="" id="slide-4" style="background:;">
+  <hgroup>
+    <h2>Smoking behavior and CHD</h2>
+  </hgroup>
+  <article data-timings="">
+    <div id = 'chart2' class = 'rChart nvd3'></div>
+
+<script type='text/javascript'>
+ $(document).ready(function(){
+      drawchart2()
+    });
+    function drawchart2(){  
+      var opts = {
+ "dom": "chart2",
+"width":    800,
+"height":    400,
+"x": "Smoker",
+"y": "Frequency",
+"group": "CHD",
+"type": "multiBarChart",
+"id": "chart2" 
+},
+        data = [
+ {
+ "CHD": "No",
+"Smoker": "No smoking",
+"Frequency": 0.8550116550117 
+},
+{
+ "CHD": "Yes",
+"Smoker": "No smoking",
+"Frequency": 0.1449883449883 
+},
+{
+ "CHD": "No",
+"Smoker": "Light smoker",
+"Frequency": 0.8714285714286 
+},
+{
+ "CHD": "Yes",
+"Smoker": "Light smoker",
+"Frequency": 0.1285714285714 
+},
+{
+ "CHD": "No",
+"Smoker": "Smoker",
+"Frequency": 0.835175879397 
+},
+{
+ "CHD": "Yes",
+"Smoker": "Smoker",
+"Frequency": 0.164824120603 
+},
+{
+ "CHD": "No",
+"Smoker": "Heavy smoker",
+"Frequency": 0.8373983739837 
+},
+{
+ "CHD": "Yes",
+"Smoker": "Heavy smoker",
+"Frequency": 0.1626016260163 
+} 
+]
+  
+      if(!(opts.type==="pieChart" || opts.type==="sparklinePlus" || opts.type==="bulletChart")) {
+        var data = d3.nest()
+          .key(function(d){
+            //return opts.group === undefined ? 'main' : d[opts.group]
+            //instead of main would think a better default is opts.x
+            return opts.group === undefined ? opts.y : d[opts.group];
+          })
+          .entries(data);
+      }
+      
+      if (opts.disabled != undefined){
+        data.map(function(d, i){
+          d.disabled = opts.disabled[i]
+        })
+      }
+      
+      nv.addGraph(function() {
+        var chart = nv.models[opts.type]()
+          .width(opts.width)
+          .height(opts.height)
+          
+        if (opts.type != "bulletChart"){
+          chart
+            .x(function(d) { return d[opts.x] })
+            .y(function(d) { return d[opts.y] })
+        }
+          
+         
+        
+          
+        
+
+        
+        
+        
+      
+       d3.select("#" + opts.id)
+        .append('svg')
+        .datum(data)
+        .transition().duration(500)
+        .call(chart);
+
+       nv.utils.windowResize(chart.update);
+       return chart;
+      });
+    };
+</script>
+
+<p>Smoking doesn&#39;t seem to be so dangerous regarding CHD</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-5" style="background:;">
+  <hgroup>
+    <h2>Glucose levels and CHD</h2>
+  </hgroup>
+  <article data-timings="">
+    <div id = 'chart3' class = 'rChart nvd3'></div>
+
+<script type='text/javascript'>
+ $(document).ready(function(){
+      drawchart3()
+    });
+    function drawchart3(){  
+      var opts = {
+ "dom": "chart3",
+"width":    800,
+"height":    400,
+"x": "Glucose",
+"y": "Frequency",
+"group": "CHD",
+"type": "multiBarChart",
+"id": "chart3" 
+},
+        data = [
+ {
+ "CHD": "No",
+"Glucose": "Desiderable",
+"Frequency": 0.8539100544257 
+},
+{
+ "CHD": "Yes",
+"Glucose": "Desiderable",
+"Frequency": 0.1460899455743 
+},
+{
+ "CHD": "No",
+"Glucose": "Pre-diabetes",
+"Frequency": 0.8363636363636 
+},
+{
+ "CHD": "Yes",
+"Glucose": "Pre-diabetes",
+"Frequency": 0.1636363636364 
+},
+{
+ "CHD": "No",
+"Glucose": "Diabetes",
+"Frequency": 0.546511627907 
+},
+{
+ "CHD": "Yes",
+"Glucose": "Diabetes",
+"Frequency": 0.453488372093 
+} 
+]
+  
+      if(!(opts.type==="pieChart" || opts.type==="sparklinePlus" || opts.type==="bulletChart")) {
+        var data = d3.nest()
+          .key(function(d){
+            //return opts.group === undefined ? 'main' : d[opts.group]
+            //instead of main would think a better default is opts.x
+            return opts.group === undefined ? opts.y : d[opts.group];
+          })
+          .entries(data);
+      }
+      
+      if (opts.disabled != undefined){
+        data.map(function(d, i){
+          d.disabled = opts.disabled[i]
+        })
+      }
+      
+      nv.addGraph(function() {
+        var chart = nv.models[opts.type]()
+          .width(opts.width)
+          .height(opts.height)
+          
+        if (opts.type != "bulletChart"){
+          chart
+            .x(function(d) { return d[opts.x] })
+            .y(function(d) { return d[opts.y] })
+        }
+          
+         
+        
+          
+        
+
+        
+        
+        
+      
+       d3.select("#" + opts.id)
+        .append('svg')
+        .datum(data)
+        .transition().duration(500)
+        .call(chart);
+
+       nv.utils.windowResize(chart.update);
+       return chart;
+      });
+    };
+</script>
+
+<p>Glucose levels have an high impact on the probability a person has a CHD!!!</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-6" style="background:;">
+  <hgroup>
+    <h2>Weight and CHD</h2>
+  </hgroup>
+  <article data-timings="">
+    <div id = 'chart4' class = 'rChart nvd3'></div>
+
+<script type='text/javascript'>
+ $(document).ready(function(){
+      drawchart4()
+    });
+    function drawchart4(){  
+      var opts = {
+ "dom": "chart4",
+"width":    800,
+"height":    400,
+"x": "Weight",
+"y": "Frequency",
+"group": "CHD",
+"type": "multiBarChart",
+"id": "chart4" 
+},
+        data = [
+ {
+ "CHD": "No",
+"Weight": "Underweight",
+"Frequency": 0.8461538461538 
+},
+{
+ "CHD": "Yes",
+"Weight": "Underweight",
+"Frequency": 0.1538461538462 
+},
+{
+ "CHD": "No",
+"Weight": "Normal weight",
+"Frequency": 0.8791621911923 
+},
+{
+ "CHD": "Yes",
+"Weight": "Normal weight",
+"Frequency": 0.1208378088077 
+},
+{
+ "CHD": "No",
+"Weight": "Overweight",
+"Frequency": 0.8324786324786 
+},
+{
+ "CHD": "Yes",
+"Weight": "Overweight",
+"Frequency": 0.1675213675214 
+},
+{
+ "CHD": "No",
+"Weight": "Obesity",
+"Frequency": 0.8051948051948 
+},
+{
+ "CHD": "Yes",
+"Weight": "Obesity",
+"Frequency": 0.1948051948052 
+} 
+]
+  
+      if(!(opts.type==="pieChart" || opts.type==="sparklinePlus" || opts.type==="bulletChart")) {
+        var data = d3.nest()
+          .key(function(d){
+            //return opts.group === undefined ? 'main' : d[opts.group]
+            //instead of main would think a better default is opts.x
+            return opts.group === undefined ? opts.y : d[opts.group];
+          })
+          .entries(data);
+      }
+      
+      if (opts.disabled != undefined){
+        data.map(function(d, i){
+          d.disabled = opts.disabled[i]
+        })
+      }
+      
+      nv.addGraph(function() {
+        var chart = nv.models[opts.type]()
+          .width(opts.width)
+          .height(opts.height)
+          
+        if (opts.type != "bulletChart"){
+          chart
+            .x(function(d) { return d[opts.x] })
+            .y(function(d) { return d[opts.y] })
+        }
+          
+         
+        
+          
+        
+
+        
+        
+        
+      
+       d3.select("#" + opts.id)
+        .append('svg')
+        .datum(data)
+        .transition().duration(500)
+        .call(chart);
+
+       nv.utils.windowResize(chart.update);
+       return chart;
+      });
+    };
+</script>
+
+<p>Also weight has a strong impact on the probaiblity to have a CHD!!</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-7" style="background:;">
   <hgroup>
     <h2>Modeling CHD</h2>
   </hgroup>
@@ -220,20 +569,38 @@ patients.</p>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=2 title='Risk factors (1)'>
+        data-slide=2 title='Risk factors'>
          2
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=3 title='Most dangerous risk factors'>
+        data-slide=3 title='Cholesterol and CHD'>
          3
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=4 title='Modeling CHD'>
+        data-slide=4 title='Smoking behavior and CHD'>
          4
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=5 title='Glucose levels and CHD'>
+         5
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=6 title='Weight and CHD'>
+         6
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=7 title='Modeling CHD'>
+         7
       </a>
     </li>
   </ul>
@@ -246,9 +613,15 @@ patients.</p>
 </body>
   <!-- Load Javascripts for Widgets -->
   
-  <!-- LOAD HIGHLIGHTER JS FILES -->
-  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
-  <script>hljs.initHighlightingOnLoad();</script>
-  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
-   
+  <!-- Google Prettify -->
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+  <script src='libraries/highlighters/prettify/js/lang-r.js'></script>
+  <script>
+    var pres = document.getElementsByTagName("pre");
+    for (var i=0; i < pres.length; ++i) {
+      pres[i].className = "prettyprint linenums";
+    }
+    prettyPrint();
+  </script>
+  <!-- End Google Prettify --> 
   </html>

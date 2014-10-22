@@ -6,6 +6,7 @@ Formula
 Hmisc
 knitr
 lattice
+leaps
 plyr
 rCharts
 RCurl

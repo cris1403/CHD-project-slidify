@@ -4,7 +4,7 @@ subtitle    : Assess the probability of having a Coronary Heart Disease
 author      : Cristian Mastrofrancesco
 job         : statistician
 framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
-highlighter : prettify  # {highlight.js, prettify, highlight}
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
 hitheme     : tomorrow      # 
 widgets     : []            # {mathjax, quiz, bootstrap}
 ext_widgets : {rCharts: [libraries/nvd3]}
@@ -39,6 +39,24 @@ We took into account different features:
 
 ---
 
+## Gender and CHD
+
+
+```{r echo = F, results = 'asis'}
+require(rCharts)
+load("framingham.Rdata") 
+
+dataset = as.data.frame(prop.table(table(framingham$TenYearCHD, framingham$male),2))
+colnames(dataset)=c("CHD", "Gender", "Frequency")
+n1 = nPlot(Frequency ~ Gender,  group = "CHD", data = dataset, type = "multiBarChart")
+n1$print("chart1")
+
+```
+
+Gender seems to be an important risk factor!
+
+---
+
 ## Cholesterol and CHD
 
 
@@ -49,7 +67,7 @@ load("framingham.Rdata")
 dataset = as.data.frame(prop.table(table(framingham$TenYearCHD, framingham$cholBins),2))
 colnames(dataset)=c("CHD", "Cholesterol", "Frequency")
 n1 = nPlot(Frequency ~ Cholesterol,  group = "CHD", data = dataset, type = "multiBarChart")
-n1$print("chart1")
+n1$print("chart2")
 
 ```
 
@@ -67,7 +85,7 @@ load("framingham.Rdata")
 dataset = as.data.frame(prop.table(table(framingham$TenYearCHD, framingham$smokerclass),2))
 colnames(dataset)=c("CHD", "Smoker", "Frequency")
 n1 = nPlot(Frequency ~ Smoker,  group = "CHD", data = dataset, type = "multiBarChart")
-n1$print("chart2")
+n1$print("chart3")
 
 ```
 
@@ -84,36 +102,30 @@ load("framingham.Rdata")
 dataset = as.data.frame(prop.table(table(framingham$TenYearCHD, framingham$glucoseclass),2))
 colnames(dataset)=c("CHD", "Glucose", "Frequency")
 n1 = nPlot(Frequency ~ Glucose,  group = "CHD", data = dataset, type = "multiBarChart")
-n1$print("chart3")
+n1$print("chart4")
 
 ```
 
 Glucose levels have an high impact on the probability a person has a CHD!!!
 
----
 
-## Weight and CHD
+--- .smallcode
 
-```{r echo = F, results = 'asis'}
-require(rCharts)
-load("framingham.Rdata") 
 
-dataset = as.data.frame(prop.table(table(framingham$TenYearCHD, framingham$weightclass),2))
-colnames(dataset)=c("CHD", "Weight", "Frequency")
-n1 = nPlot(Frequency ~ Weight,  group = "CHD", data = dataset, type = "multiBarChart")
-n1$print("chart4")
+## Modeling CHD using logistic regression
 
-```
-
-Also weight has a strong impact on the probaiblity to have a CHD!!
-
----
-
-## Modeling CHD
-
-We use logistic regression on training set to predict
+We use logistic regression to predict
 whether or not a patient experienced CHD within 10
 years of first examination.
 
 The model can differentiate low-risk from high-risk
 patients.
+
+```{r echo=FALSE}
+load("framingham.Rdata") 
+logfit = glm(TenYearCHD ~ male + age + cigsPerDay + totChol + sysBP + glucose + prevalentStroke,
+    data=framingham, family=binomial)
+summary(logfit)
+
+```
+

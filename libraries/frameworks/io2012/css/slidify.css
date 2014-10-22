@@ -366,3 +366,6 @@ pre code {
 }
 
 
+slide.smallcode pre {
+  font-size: 11px;
+}
